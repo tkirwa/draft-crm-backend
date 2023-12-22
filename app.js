@@ -1,5 +1,6 @@
 const createError = require("http-errors");
 const express = require("express");
+const cors = require('cors');
 const path = require("path");
 const cookieParser = require("cookie-parser");
 const bodyParser = require('body-parser');
@@ -14,9 +15,16 @@ require("dotenv").config();
 const indexRouter = require("./routes/index");
 const usersRouter = require("./routes/userRoutes");
 const authRouter = require("./routes/authRoutes");
-const resetPasswordRoutes = require('./routes/resetPasswordRoutes');
+
+const complaintRoutes = require('./routes/complaintRoutes');
+const responseRoutes = require('./routes/responseRoutes');
+const customerRoutes = require('./routes/customerRoutes');
+const ratingRoutes = require('./routes/ratingRoutes');
 
 const app = express();
+
+// Enable CORS for all routes
+app.use(cors());
 
 // MongoDB connection
 mongoose
@@ -38,18 +46,24 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
 app.use("/", indexRouter);
-app.use("/users", usersRouter);
-app.use("/auth", authRouter);
-app.use('/auth-reset', resetPasswordRoutes);
+app.use("/api", usersRouter);
+app.use("/api", authRouter);
+app.use('/api', complaintRoutes);
+app.use('/api', responseRoutes);
+app.use('/api', customerRoutes);
+app.use('/api', ratingRoutes);
+
+
 
 // catch 404 and forward to error handler
-app.use(function (req, res, next) {
-  next(createError(404));
-});
+// app.use(function (req, res, next) {
+//   next(createError(404));
+// });
 
-// Handle 404 errors for routes that are not defined
-app.use((req, res) => {
-  res.status(404).json({ error: "Not Found" });
+
+// 404 Error Handling
+app.use((req, res, next) => {
+  res.status(404).json({ error: 'Not Found' });
 });
 
 // error handler
@@ -60,7 +74,7 @@ app.use(function (err, req, res, next) {
 
   // render the error page
   res.status(err.status || 500);
-  res.render("error");
+  res.json({ error: err.message });
 });
 
 const port = 8000;

@@ -50,16 +50,16 @@ exports.validateUser = [
     .withMessage("Password must be at least 6 characters long"),
 
   // Validate role
-  check("role").isIn(["user", "admin"]).withMessage("Role is invalid"),
-
-  // Handle validation errors
-  (req, res, next) => {
-    const errors = validationResult(req);
-    if (!errors.isEmpty()) {
-      return res.status(400).json({ errors: errors.array() });
-    }
-    next();
-  },
+  // check("role").isIn(["user", "admin"]).withMessage("Role is invalid"),
+  //
+  // // Handle validation errors
+  // (req, res, next) => {
+  //   const errors = validationResult(req);
+  //   if (!errors.isEmpty()) {
+  //     return res.status(400).json({ errors: errors.array() });
+  //   }
+  //   next();
+  // },
 ];
 
 exports.checkIfUsersExist = async (req, res, next) => {
