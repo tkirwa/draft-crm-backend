@@ -1,4 +1,5 @@
-// authMiddleware.js
+// middlewares/authMiddleware.js
+const { body, validationResult } = require('express-validator');
 
 const jwt = require("jsonwebtoken");
 const dotenv = require("dotenv");
