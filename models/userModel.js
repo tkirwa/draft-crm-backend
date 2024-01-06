@@ -19,7 +19,7 @@ const UserSchema = new mongoose.Schema(
         password: {type: String, required: true},
         role: {
             type: String,
-            enum: ["user", "admin"],
+            enum: ["user", "agent", "supervisor", "admin"],
             default: "user",
         },
         // settings: { type: mongoose.Schema.Types.ObjectId, ref: 'Settings' },
@@ -27,7 +27,8 @@ const UserSchema = new mongoose.Schema(
             darkMode: {type: Boolean, default: false},
             language: {type: String, default: "English"},
         },
-    },
+        verificationCode: { type: String },
+        verified: {type: Boolean, default: false},    },
     {
         timestamps: true,
     }

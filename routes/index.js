@@ -8,6 +8,4 @@ router.get('/', function(req, res, next) {
   res.json({ message: 'Welcome to Clarek CRM' });
 });
 
-// router.get('/protected-route', authMiddleware.authenticateToken, UserController.protectedRoute);
-
 module.exports = router;

@@ -23,6 +23,8 @@ const ratingRoutes = require('./routes/ratingRoutes');
 
 const app = express();
 
+const PORT = 8000;
+
 // Enable CORS for all routes
 app.use(cors());
 
@@ -53,14 +55,6 @@ app.use('/api', responseRoutes);
 app.use('/api', customerRoutes);
 app.use('/api', ratingRoutes);
 
-
-
-// catch 404 and forward to error handler
-// app.use(function (req, res, next) {
-//   next(createError(404));
-// });
-
-
 // 404 Error Handling
 app.use((req, res, next) => {
   res.status(404).json({ error: 'Not Found' });
@@ -77,9 +71,8 @@ app.use(function (err, req, res, next) {
   res.json({ error: err.message });
 });
 
-const port = 8000;
-app.listen(port, () => {
-  console.log(`Server is running on port ${port}`);
+app.listen(PORT, '0.0.0.0', () => {
+  console.log(`Server running at http://0.0.0.0:${PORT}`);
 });
 
 module.exports = app;
