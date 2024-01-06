@@ -10,11 +10,11 @@ const mongoose = require("mongoose");
 // Load dotenv in Your Application
 require("dotenv").config();
 
-// const routingMiddleware = require('./middlewares/routingMiddleware');
 
 const indexRouter = require("./routes/index");
 const usersRouter = require("./routes/userRoutes");
-const authRouter = require("./routes/authRoutes");
+const authRoutes = require("./routes/authRoutes");
+const smsRoutes = require("./routes/smsRoutes");
 
 const complaintRoutes = require('./routes/complaintRoutes');
 const responseRoutes = require('./routes/responseRoutes');
@@ -49,7 +49,8 @@ app.use(bodyParser.urlencoded({ extended: true }));
 
 app.use("/", indexRouter);
 app.use("/api", usersRouter);
-app.use("/api", authRouter);
+app.use('/api/auth', authRoutes);
+app.use('/api/sms', smsRoutes);
 app.use('/api', complaintRoutes);
 app.use('/api', responseRoutes);
 app.use('/api', customerRoutes);

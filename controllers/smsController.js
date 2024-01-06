@@ -1,7 +1,7 @@
 // controllers/authController.js
 const User = require("../models/userModel");
 const bcrypt = require("bcrypt");
-const { sendSMS } = require("./smsController");
+const { sendSMS } = require("../controllers/sendSmsController");
 const generateSixDigitCode = require("../services/generateCode");
 const client = require("../config/redis"); // Import the Redis client
 

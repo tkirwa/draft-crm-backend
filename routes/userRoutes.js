@@ -2,7 +2,6 @@
 const express = require("express");
 const userController = require("../controllers/userController");
 const {
-  validateUser,
   checkIfUsersExist,
 } = require("../middlewares/userMiddleware");
 const authMiddleware = require("../middlewares/authMiddleware");
