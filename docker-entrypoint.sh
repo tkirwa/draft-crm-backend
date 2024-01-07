@@ -14,7 +14,7 @@ mongorestore --db clarek_crm_db --drop /data/db/clarek_crm_db
 redis-server --daemonize yes
 
 # Start the NGINX server
-service nginx start
+# service nginx restart
 
 # Start the Node.js application
 exec "$@"
