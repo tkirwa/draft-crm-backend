@@ -41,17 +41,17 @@ RUN apt-get update && \
 # Expose Redis port
 EXPOSE 6379
 
-# Install NGINX
-RUN apt-get update && \
-    apt-get install -y nginx && \
-    apt-get clean && \
-    rm -rf /var/lib/apt/lists/*
+# # Install NGINX
+# RUN apt-get update && \
+#     apt-get install -y nginx && \
+#     apt-get clean && \
+#     rm -rf /var/lib/apt/lists/*
 
-# Copy the custom NGINX configuration file
-COPY default.conf /etc/nginx/conf.d/
+# # Copy the custom NGINX configuration file
+# COPY default.conf /etc/nginx/conf.d/
 
-# Expose NGINX port
-EXPOSE 80
+# # Expose NGINX port
+# EXPOSE 80
 
 # Set the working directory
 WORKDIR /usr/src/app
@@ -67,6 +67,10 @@ RUN npm install
 COPY . .
 
 ##############################################################################3
+
+# mongodump command to backup a MongoDB database named clarek_crm_db
+# RUN mongodump --host 0.0.0.0 --port 27017 --db clarek_crm_db --out .
+
 # Create a directory to store MongoDB data
 RUN mkdir -p /data/db
 
@@ -80,7 +84,7 @@ COPY docker-entrypoint.sh /usr/src/app/
 RUN chmod +x /usr/src/app/docker-entrypoint.sh
 
 # Expose the port the app runs on
-EXPOSE 3000
+EXPOSE 8000
 
 # Define the command to run your app
 CMD ["/usr/src/app/docker-entrypoint.sh", "node", "app.js"]
