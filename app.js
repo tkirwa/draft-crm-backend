@@ -3,7 +3,6 @@ const express = require("express");
 const cors = require('cors');
 const path = require("path");
 const cookieParser = require("cookie-parser");
-const bodyParser = require('body-parser');
 const logger = require("morgan");
 const mongoose = require("mongoose");
 
@@ -42,10 +41,6 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, "public")));
-
-// Use body-parser middleware
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: true }));
 
 app.use("/", indexRouter);
 app.use("/api", usersRouter);
