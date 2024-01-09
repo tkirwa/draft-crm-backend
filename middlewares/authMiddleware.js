@@ -44,4 +44,30 @@ const checkAdminRole = (req, res, next) => {
   next();
 };
 
-module.exports = { authenticateToken, checkAdminRole };
+const validateResetPasswordInput = (req, res, next) => {
+
+  body('phone')
+    .trim()
+    .notEmpty()
+    .withMessage('Please enter a valid phone number'),
+  body('password')
+    .trim()
+    .notEmpty()
+    .withMessage('Please enter a password'),
+  body('confirmPassword')
+    .trim()
+    .notEmpty()
+    .custom((value, { req }) => value === req.body.password)
+    .withMessage('Passwords do not match'),
+
+  // Custom middleware to handle validation errors
+  (req, res, next) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      return res.status(400).json({ errors: errors.array() });
+    }
+    next();
+  }
+};
+
+module.exports = { authenticateToken, checkAdminRole, validateResetPasswordInput };

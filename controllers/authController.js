@@ -1,6 +1,8 @@
+const { validationResult } = require('express-validator');
 const User = require('../models/userModel');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
+
 
 exports.login = async (req, res) => {
   const { phone, password } = req.body;
@@ -42,5 +44,28 @@ exports.register = async (req, res) => {
     res.status(201).send({ user });
   } catch (error) {
     res.status(400).send(error);
+  }
+};
+
+exports.resetPassword = async (req, res) => {
+  // Check for validation errors
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) {
+    return res.status(400).json({ errors: errors.array() });
+  }
+
+  try {
+    const { phone, password } = req.body;
+
+    // Hash the password
+    const hashedPassword = await bcrypt.hash(password, 10);
+
+    // Update the user's password in the database
+    await User.findOneAndUpdate({ phone }, { password: hashedPassword });
+
+    res.json({ message: 'Password updated successfully' });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: 'An error occurred while resetting the password' });
   }
 };

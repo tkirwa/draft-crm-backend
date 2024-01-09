@@ -1,9 +1,12 @@
-const express = require('express');
+// routes/authRoutes.js
+const express = require("express");
 const router = express.Router();
-const authController = require('../controllers/authController');
-const { validateUser } = require('../middlewares/userMiddleware');
+const authController = require("../controllers/authController");
+const { validateResetPasswordInput } = require("../middlewares/authMiddleware");
+const { validateUser } = require("../middlewares/userMiddleware");
 
-router.post('/login', authController.login);
-router.post('/signup', validateUser, authController.register);
+router.post("/login", authController.login);
+router.post("/signup", validateUser, authController.register);
+router.post('/reset-password', validateResetPasswordInput, authController.resetPassword);
 
 module.exports = router;
