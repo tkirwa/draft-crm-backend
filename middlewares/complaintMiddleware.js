@@ -4,6 +4,7 @@ const { body, validationResult } = require("express-validator");
 
 // Validation middleware for creating a new complaint
 exports.validateCreateComplaint = [
+  // body("ticketNumber").trim().notEmpty().withMessage("Ticket number is required"),
   body("subject").trim().notEmpty().withMessage("Subject is required"),
   body("description").trim().notEmpty().withMessage("Description is required"),
   (req, res, next) => {
@@ -17,6 +18,7 @@ exports.validateCreateComplaint = [
 
 // Validation middleware for updating a complaint
 exports.validateUpdateComplaint = [
+  body("ticketNumber").optional().trim(),
   body("subject").optional().trim(),
   body("description").optional().trim(),
   (req, res, next) => {

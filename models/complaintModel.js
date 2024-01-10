@@ -1,6 +1,11 @@
 const mongoose = require('mongoose');
 
 const complaintSchema = new mongoose.Schema({
+    ticketNumber: {
+        type: String,
+        required: true,
+        unique: true, // If you want each ticket number to be unique
+    },
     subject: {
         type: String,
         required: true,

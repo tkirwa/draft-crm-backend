@@ -44,7 +44,7 @@ const checkAdminRole = (req, res, next) => {
   next();
 };
 
-const validateResetPasswordInput = (req, res, next) => {
+const validateResetPasswordInput = async (req, res, next) => {
 
   body('phone')
     .trim()
@@ -66,7 +66,7 @@ const validateResetPasswordInput = (req, res, next) => {
     if (!errors.isEmpty()) {
       return res.status(400).json({ errors: errors.array() });
     }
-    next();
+    // next();
   }
 };
 

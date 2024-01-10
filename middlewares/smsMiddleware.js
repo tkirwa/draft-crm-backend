@@ -24,3 +24,17 @@ exports.validateVerifyCodeInput = [
     .withMessage("Please enter a verification code"),
   // ... other validations
 ];
+
+// Validation middleware for sending SMS
+exports.validateSendSmsInput = [
+  body("smsPhone")
+    .trim()
+    .notEmpty()
+    .isMobilePhone()
+    .withMessage("Please enter a valid phone number"),
+  body("smsMessage")
+    .trim()
+    .notEmpty()
+    .withMessage("Type your message"),
+  // ... other validations
+];

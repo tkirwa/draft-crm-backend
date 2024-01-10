@@ -1,5 +1,3 @@
-// controllers/smsController.js
-
 // Load environment variables from .env file
 require('dotenv').config();
 
@@ -14,9 +12,11 @@ const Africastalking = require('africastalking')(credentials);
 const sms = Africastalking.SMS;
 
 exports.sendSMS = async (req, res) => {
-    try {
-        const { smsPhone, smsMessage } = req.body;
 
+    const { smsPhone, smsMessage } = req.body;
+
+
+    try {
         const formattedPhone = `+${smsPhone}`;
 
         // Send SMS using Africa's Talking
@@ -27,9 +27,9 @@ exports.sendSMS = async (req, res) => {
         });
 
         console.log(response);
-        res.json({ sent: 1, message: response });
+        return { sent: 1, message: response };
     } catch (error) {
         console.error(error);
-        res.status(500).json({ sent: 0, message: error.message });
+        return { sent: 0, message: error.message };
     }
 };
