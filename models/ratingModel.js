@@ -6,10 +6,11 @@ const ratingSchema = new mongoose.Schema({
     response: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Response',
+        required: true,
     },
     customer: {
         type: mongoose.Schema.Types.ObjectId,
-        ref: 'Customer',
+        ref: 'User',
         required: true,
     },
     rating: {

@@ -5,8 +5,8 @@ const Rating = require('../models/ratingModel');
 // Create a new rating
 exports.createRating = async (req, res) => {
     try {
-        const { customer, rating, comment } = req.body;
-        const newRating = new Rating({ customer, rating, comment });
+        const { response, customer, rating, comment } = req.body;
+        const newRating = new Rating({ response, customer, rating, comment });
         const savedRating = await newRating.save();
         res.status(201).json(savedRating);
     } catch (error) {

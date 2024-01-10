@@ -20,6 +20,7 @@ const responseRoutes = require('./routes/responseRoutes');
 const customerRoutes = require('./routes/customerRoutes');
 const ratingRoutes = require('./routes/ratingRoutes');
 
+
 const app = express();
 
 const PORT = 8000;
@@ -49,7 +50,7 @@ app.use('/api/sms', smsRoutes);
 app.use('/api', complaintRoutes);
 app.use('/api', responseRoutes);
 app.use('/api', customerRoutes);
-app.use('/api', ratingRoutes);
+app.use('/api/ratings', ratingRoutes);
 
 // 404 Error Handling
 app.use((req, res, next) => {
