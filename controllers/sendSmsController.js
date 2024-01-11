@@ -12,22 +12,23 @@ const Africastalking = require("africastalking")(credentials);
 const sms = Africastalking.SMS;
 
 exports.sendSMS = async (req, res) => {
-  try {
-    const { smsPhone, smsMessage } = req.body;
-
-    const formattedPhone = `+${smsPhone}`;
-
-    // Send SMS using Africa's Talking
-    const response = await sms.send({
-      to: [formattedPhone], // Ensure that smsPhone is a string in the format '+2547XXXXXXXX'
-      message: smsMessage,
-      enqueue: true, // Set to true to enable queuing (optional)
-    });
-
-    console.log(response);
-    res.json({ sent: 1, message: response });
-  } catch (error) {
-    console.error(error);
-    res.status(500).json({ sent: 0, message: error.message });
-  }
-};
+    try {
+      const { smsPhone, smsMessage } = req.body;
+  
+      const formattedPhone = `+${smsPhone}`;
+  
+      // Send SMS using Africa's Talking
+      const response = await sms.send({
+        to: [formattedPhone],
+        message: smsMessage,
+        enqueue: true,
+      });
+  
+      console.log(response);
+      // res.json({ sent: 1, message: response });
+    } catch (error) {
+      console.error(error);
+      res.status(500).json({ sent: 0, message: error.message });
+    }
+  };
+  

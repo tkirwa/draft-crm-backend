@@ -46,7 +46,7 @@ exports.sendCode = async (req, res) => {
           smsMessage: `Your verification code is ${code}`,
         },
       },
-      res
+      res.status(200).json({ message: "Verification code sent successfully" })
     );
   } catch (error) {
     console.error(error);
@@ -73,13 +73,14 @@ exports.verifyCode = async (req, res) => {
     // Retrieve the code and timestamp from Redis
     const redisData = await client.get(phone);
 
-
     // Disconnect from Redis
     await client.disconnect();
 
     if (!redisData) {
       // If no data found in Redis, the code might be expired or invalid
-      return res.status(400).json({ message: "Code has expired or is invalid" });
+      return res
+        .status(400)
+        .json({ message: "Code has expired or is invalid" });
     }
 
     const { storedCode, timestamp } = JSON.parse(redisData);
@@ -93,11 +94,10 @@ exports.verifyCode = async (req, res) => {
       console.log(currentTime);
 
       // Check if the difference between the current time and stored timestamp is within the expiration period
-      const difference = Math.floor((currentTime - timestamp) /1000);
+      const difference = Math.floor((currentTime - timestamp) / 1000);
 
       console.log(difference);
       console.log(VERIFICATION_CODE_EXPIRATION);
-
 
       if (difference <= VERIFICATION_CODE_EXPIRATION) {
         // Set the verified to true
@@ -124,7 +124,6 @@ exports.verifyCode = async (req, res) => {
       .json({ message: "An error occurred during verification" });
   }
 };
-
 
 exports.resetPassword = async (req, res) => {
   try {

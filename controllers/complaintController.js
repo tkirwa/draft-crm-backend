@@ -1,6 +1,6 @@
 // controllers/complaintController.js
 const Complaint = require("../models/complaintModel");
-const User = require('../models/userModel');
+const User = require("../models/userModel");
 const generateTicketNumber = require("../services/generateTicket");
 const { sendSMS } = require("./sendSmsController");
 
@@ -28,48 +28,33 @@ exports.createComplaint = async (req, res) => {
     const creator = await User.findById(createdBy);
 
     // Send SMS - verification code
-    const smsResult = await sendSMS({
-      body: {
-        smsPhone: creator.phone,
-        smsMessage: `Dear customer, we've received your complaint under ${ticketNumber}. We shall get back to you in a moment. Thank you!`,
+    await sendSMS(
+      {
+        body: {
+          smsPhone: creator.phone,
+          smsMessage: `Dear customer, we've received your complaint under ${ticketNumber}. We shall get back to you in a moment. Thank you!`,
+        },
       },
-    });
+    );
 
     // Log SMS result
-    console.log("SMS Result:", smsResult);
+    // console.log("SMS Result:", smsResult);
 
     // Respond with the created complaint
-    res.status(201).json({
+    return res.status(201).json({
       success: true,
       message: "Complaint created successfully",
       complaint: newComplaint,
     });
   } catch (error) {
     console.error(error);
-    res.status(500).json({
+    return res.status(500).json({
       success: false,
       message: "Internal Server Error",
     });
   }
 };
 
-
-
-// // Create a new complaint
-// exports.createComplaint = async (req, res) => {
-//     try {
-//         const { subject, description, createdBy } = req.body;
-
-//         // Get the user ID from the request (assuming it's included in the token)
-//         // const createdBy = req.user._id;
-
-//         const newComplaint = new Complaint({ subject, description, createdBy });
-//         const savedComplaint = await newComplaint.save();
-//         res.status(201).json(savedComplaint);
-//     } catch (error) {
-//         res.status(500).json({ error: error.message });
-//     }
-// };
 
 // Get all complaints
 exports.getAllComplaints = async (req, res) => {
