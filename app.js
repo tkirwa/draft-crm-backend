@@ -1,6 +1,7 @@
 const createError = require("http-errors");
 const express = require("express");
 const cors = require('cors');
+const helmet = require('helmet');
 const path = require("path");
 const cookieParser = require("cookie-parser");
 const logger = require("morgan");
@@ -24,9 +25,14 @@ const ratingRoutes = require('./routes/ratingRoutes');
 const app = express();
 
 const PORT = 8000;
+const HOST = process.env.HOST || '0.0.0.0';;
+
 
 // Enable CORS for all routes
 app.use(cors());
+
+// adding security headers to enhance the security of your application
+app.use(helmet());
 
 // MongoDB connection
 mongoose
@@ -68,8 +74,8 @@ app.use(function (err, req, res, next) {
   res.json({ error: err.message });
 });
 
-app.listen(PORT, '0.0.0.0', () => {
-  console.log(`Server running at http://0.0.0.0:${PORT}`);
+app.listen(PORT, HOST, () => {
+  console.log(`Server running at http://${HOST}:${PORT}`);
 });
 
 module.exports = app;
