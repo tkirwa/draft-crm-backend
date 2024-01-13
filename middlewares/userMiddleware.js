@@ -1,6 +1,7 @@
 const { check, validationResult } = require("express-validator");
 const User = require("../models/userModel");
 
+// Validate user details
 exports.validateUser = [
   // Validate first name
   check("firstName")
@@ -21,47 +22,28 @@ exports.validateUser = [
   // Validate email
   check("email").isEmail().withMessage("Email is invalid"),
 
-  // Exclude phone validation for updating user details
-  (req, res, next) => {
-    if (req.method === "PUT") {
-      return next(); // Skip phone validation for updating user details
-    }
-
-    // Validate phone (for user creation)
-    check("phone")
-      .not()
-      .isEmpty()
-      .withMessage("phone (as username) is required")
-      .isLength({ min: 10 })
-      .withMessage("Phone must have at least 10 digits")
-      .custom(async (value) => {
-        // Check if the phone number already exists in the database
-        const user = await User.findOne({ phone: value });
-        if (user) {
-          throw new Error("Phone number is already in use");
-        }
-        return true;
-      })(req, res, next);
-  },
+  // Validate phone
+  check("phone")
+    .not()
+    .isEmpty()
+    .withMessage("Phone (as username) is required")
+    .isLength({ min: 10 })
+    .withMessage("Phone must have at least 10 digits")
+    .custom(async (value, { req }) => {
+      // Check if the phone number already exists in the database
+      const user = await User.findOne({ phone: value });
+      if (user) {
+        throw new Error("Phone number is already in use");
+      }
+    }),
 
   // Validate password
   check("password")
     .isLength({ min: 6 })
     .withMessage("Password must be at least 6 characters long"),
-
-  // Validate role
-  // check("role").isIn(["user", "admin"]).withMessage("Role is invalid"),
-  //
-  // // Handle validation errors
-  // (req, res, next) => {
-  //   const errors = validationResult(req);
-  //   if (!errors.isEmpty()) {
-  //     return res.status(400).json({ errors: errors.array() });
-  //   }
-  //   next();
-  // },
 ];
 
+// Middleware to check if users exist
 exports.checkIfUsersExist = async (req, res, next) => {
   try {
     const users = await User.find();
@@ -69,6 +51,7 @@ exports.checkIfUsersExist = async (req, res, next) => {
     if (users.length === 0) {
       return res.status(404).json({ message: "No users found" });
     }
+
     // Attach the users to the request object for further processing in the controller
     req.users = users;
     next();
